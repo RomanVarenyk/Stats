@@ -1,0 +1,10 @@
+MongoDB:
+  host: 'localhost'
+  port: 27017
+  database: 'testDB'
+  collection: 'quests'
+MySQL:
+  ip: 127.0.0.1
+  password:
+  username: root
+  database name: testdb

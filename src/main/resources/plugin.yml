@@ -1,0 +1,5 @@
+name: Stats
+version: '${project.version}'
+main: com.github.ukraine1449.stats.Stats
+api-version: 1.18
+authors: [ Ukraine1449 ]
