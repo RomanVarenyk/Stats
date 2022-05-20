@@ -21,6 +21,7 @@ public final class Stats extends JavaPlugin {
         instance =this;
         try {
             createTableUserList();
+            loadMongo();
         } catch (Exception e) {
             e.printStackTrace();
         }
