@@ -17,15 +17,15 @@ import java.util.Map;
 import static org.bukkit.Bukkit.getServer;
 
 public class CachedPlayer {
-    public CachedPlayer(Player p){
-        p = player;
-        map.put(p, this);
-    }
     public Player player;
     public ArrayList<Integer> playerStats = new ArrayList<>();
     public static Map<Player, CachedPlayer> map = new HashMap<>();
     public static CachedPlayer get(Player p) {
         return map.get(p);
+    }
+    public CachedPlayer(Player p){
+        player = p;
+        map.put(p, this);
     }
     public void loadFromDB(){
         Bukkit.getScheduler().runTaskAsynchronously(getServer().getPluginManager().getPlugin("Stats"), new Runnable() {
@@ -34,15 +34,15 @@ public class CachedPlayer {
                 try {
                     String UUID = player.getUniqueId().toString();
                     Connection con = Stats.instance.getConnection();
-                    PreparedStatement statement = con.prepareStatement("SELECT Type FROM userList WHERE UUID='"+UUID+"'");
+                    PreparedStatement statement = con.prepareStatement("SELECT * FROM userList WHERE UUID='"+UUID+"'");
                     ResultSet result = statement.executeQuery();
                     while(result.next()){
-                        playerStats.set(0, result.getInt("kills"));
-                        playerStats.set(1, result.getInt("walked"));
-                        playerStats.set(2, result.getInt("deaths"));
-                        playerStats.set(3, result.getInt("mined"));
-                        playerStats.set(4, result.getInt("placed"));
-                        playerStats.set(5, result.getInt("exp"));
+                        playerStats.add(0, result.getInt("kills"));
+                        playerStats.add(1, result.getInt("walked"));
+                        playerStats.add(2, result.getInt("deaths"));
+                        playerStats.add(3, result.getInt("mined"));
+                        playerStats.add(4, result.getInt("placed"));
+                        playerStats.add(5, result.getInt("exp"));
                     }
                     con.close();
                 }catch (Exception e){

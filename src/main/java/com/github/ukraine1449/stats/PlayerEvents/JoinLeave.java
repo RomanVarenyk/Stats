@@ -23,12 +23,12 @@ public class JoinLeave implements Listener {
             plugin.playerJoinQuery(player.getUniqueId().toString());
             plugin.onlinePlayers.add(player);
             CachedPlayer cp = new CachedPlayer(player);
-            cp.playerStats.set(0, 0);
-            cp.playerStats.set(1, 0);
-            cp.playerStats.set(2, 0);
-            cp.playerStats.set(3, 0);
-            cp.playerStats.set(4, 0);
-            cp.playerStats.set(5, 0);
+            cp.playerStats.add(0, 0);
+            cp.playerStats.add(1, 0);
+            cp.playerStats.add(2, 0);
+            cp.playerStats.add(3, 0);
+            cp.playerStats.add(4, 0);
+            cp.playerStats.add(5, 0);
         }else{
             plugin.onlinePlayers.add(player);
             CachedPlayer cp = new CachedPlayer(player);
@@ -36,7 +36,7 @@ public class JoinLeave implements Listener {
         }
     }
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerJoin(PlayerQuitEvent event){
+    public void onPlayerLeave(PlayerQuitEvent event){
         Player player = event.getPlayer();
         plugin.onlinePlayers.remove(player);
         CachedPlayer cp = CachedPlayer.get(player);

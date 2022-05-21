@@ -4,6 +4,7 @@ import com.github.ukraine1449.stats.Blocks.BlockBreak;
 import com.github.ukraine1449.stats.Blocks.BlockPlace;
 import com.github.ukraine1449.stats.Death.Kills;
 import com.github.ukraine1449.stats.Menu.MenuHandler;
+import com.github.ukraine1449.stats.Menu.StatsCommand;
 import com.github.ukraine1449.stats.Player.CachedPlayer;
 import com.github.ukraine1449.stats.Player.Exp;
 import com.github.ukraine1449.stats.Player.PlayerWalk;
@@ -12,7 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.net.UnknownHostException;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,7 +30,7 @@ public final class Stats extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        getCommand("stats").setExecutor(new Stats());
+        getCommand("stats").setExecutor(new StatsCommand(this));
         getServer().getPluginManager().registerEvents(new BlockBreak(this), this);
         getServer().getPluginManager().registerEvents(new BlockPlace(this), this);
         getServer().getPluginManager().registerEvents(new Kills(), this);
@@ -46,13 +47,12 @@ public final class Stats extends JavaPlugin {
             cp.loadToDB();
             onlinePlayers.remove(p);
         }
-        //TODO Add SQL disconect reference
     }
     public Connection getConnection() throws Exception{
-        String ip = getConfig().getString("ip");
-        String password = getConfig().getString("password");
-        String username = getConfig().getString("username");
-        String dbn = getConfig().getString("database name");//these 4 strings get the login info from config.yml file, and use that for DB connections
+        String ip = getConfig().getString("MySQL.ip");
+        String password = getConfig().getString("MySQL.password");
+        String username = getConfig().getString("MySQL.username");
+        String dbn = getConfig().getString("MySQL.database name");//these 4 strings get the login info from config.yml file, and use that for DB connections
         try{
             String driver = "com.mysql.jdbc.Driver";
             String url = "jdbc:mysql://"+ ip + ":3306/" + dbn;
@@ -69,7 +69,7 @@ public final class Stats extends JavaPlugin {
     public void createTableUserList()throws Exception{
         try{
             Connection con = getConnection();
-            PreparedStatement create = con.prepareStatement("CREATE TABLE IF NOT EXISTS userList(UUID varchar(255), int kills, int deaths, int exp, int mined, int placed,int walked, PRIMARY KEY (UUID))");
+            PreparedStatement create = con.prepareStatement("CREATE TABLE IF NOT EXISTS userList(UUID varchar(255),kills int,deaths int,exp int,mined int,placed int,walked int)");
             create.executeUpdate();
             con.close();
         }catch(Exception e){
@@ -79,7 +79,7 @@ public final class Stats extends JavaPlugin {
     public void playerJoinQuery(String UUID){
         try{//executed when a player is joining in playerJoinEvent, basically if the players UUID isnt already in the database it adds it with all stats of 0
             Connection con = getConnection();
-            PreparedStatement posted = con.prepareStatement("INSERT INTO userList(UUID) VALUES ('"+UUID+"')ON DUPLICATE KEY UPDATE UUID='"+UUID+"'");
+            PreparedStatement posted = con.prepareStatement("INSERT INTO userList(UUID, kills, deaths, exp, mined, placed, walked) VALUES ('"+UUID+"', 0, 0, 0, 0, 0, 0)ON DUPLICATE KEY UPDATE kills=0");
             posted.executeUpdate();
             con.close();
         }catch (Exception e){

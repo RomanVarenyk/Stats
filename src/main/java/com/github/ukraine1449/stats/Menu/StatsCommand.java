@@ -1,9 +1,11 @@
 package com.github.ukraine1449.stats.Menu;
 
 import com.github.ukraine1449.stats.Player.CachedPlayer;
+import com.github.ukraine1449.stats.Stats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,10 +16,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
-public class Stats implements CommandExecutor {
+public class StatsCommand implements CommandExecutor {
 Stats plugin;
 
-    public Stats(Stats plugin) {
+    public StatsCommand(Stats plugin) {
         this.plugin = plugin;
     }
 
@@ -30,6 +32,7 @@ Stats plugin;
                 player.openInventory(getPlayerData(target));
             }else{
                 Player player = (Player) sender;
+                player.sendMessage(String.valueOf(player.getStatistic(Statistic.WALK_ONE_CM)));
                 player.openInventory(getPlayerData(player));
             }
         }
