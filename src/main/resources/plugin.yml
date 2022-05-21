@@ -3,3 +3,8 @@ version: '${project.version}'
 main: com.github.ukraine1449.stats.Stats
 api-version: 1.18
 authors: [ Ukraine1449 ]
+commands:
+  stats:
+    description: Gets your or someone elses stats.
+    permission: Stats.stats
+    permission-message: You need the Stats.stats permission to execute this command

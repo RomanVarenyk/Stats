@@ -1,7 +1,14 @@
 package com.github.ukraine1449.stats;
 
+import com.github.ukraine1449.stats.Blocks.BlockBreak;
+import com.github.ukraine1449.stats.Blocks.BlockPlace;
 import com.github.ukraine1449.stats.Database.Mongo;
+import com.github.ukraine1449.stats.Death.Kills;
+import com.github.ukraine1449.stats.Menu.MenuHandler;
 import com.github.ukraine1449.stats.Player.CachedPlayer;
+import com.github.ukraine1449.stats.Player.Exp;
+import com.github.ukraine1449.stats.Player.PlayerWalk;
+import com.github.ukraine1449.stats.PlayerEvents.JoinLeave;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,6 +32,14 @@ public final class Stats extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        getCommand("stats").setExecutor(new Stats());
+        getServer().getPluginManager().registerEvents(new BlockBreak(this), this);
+        getServer().getPluginManager().registerEvents(new BlockPlace(this), this);
+        getServer().getPluginManager().registerEvents(new Kills(), this);
+        getServer().getPluginManager().registerEvents(new MenuHandler(), this);
+        getServer().getPluginManager().registerEvents(new Exp(), this);
+        getServer().getPluginManager().registerEvents(new PlayerWalk(), this);
+        getServer().getPluginManager().registerEvents(new JoinLeave(this), this);
     }
 
     @Override
