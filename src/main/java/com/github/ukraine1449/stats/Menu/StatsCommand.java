@@ -5,7 +5,6 @@ import com.github.ukraine1449.stats.Stats;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -26,19 +25,18 @@ Stats plugin;
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if(sender instanceof Player){
-            if(args.length > 0){
+            if(args.length > 0){//Check if player is talking about themselves or another player. else is for self
                 Player target = Bukkit.getPlayerExact(args[0]);
                 Player player = (Player) sender;
                 player.openInventory(getPlayerData(target));
             }else{
                 Player player = (Player) sender;
-                player.sendMessage(String.valueOf(player.getStatistic(Statistic.WALK_ONE_CM)));
                 player.openInventory(getPlayerData(player));
             }
         }
         return false;
     }
-    public ItemStack createItemStack(Material material, String name, String description){
+    public ItemStack createItemStack(Material material, String name, String description){//Method for creating itemstacks because its too much of a pain in the ass with meta.
         ItemStack itemStack = new ItemStack(material);
         ItemMeta isl = itemStack.getItemMeta();
         isl.setDisplayName(name);
@@ -48,7 +46,7 @@ Stats plugin;
         itemStack.setItemMeta(isl);
         return itemStack;
     }
-    public Inventory getPlayerData(Player player){
+    public Inventory getPlayerData(Player player){ //Gets and creates inventory for your or other player stats, method instead of being in class of event because of dual usage
         Inventory inv = Bukkit.createInventory(player, 9, ChatColor.BLUE+"Player stats");
         CachedPlayer cp = CachedPlayer.get(player);
         inv.addItem((createItemStack(Material.PLAYER_HEAD, ChatColor.BLUE+player.getDisplayName(), ChatColor.BLUE+player.getDisplayName()+" Stats")));

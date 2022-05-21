@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class MenuHandler implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onInventoryClick(InventoryClickEvent event){
+    public void onInventoryClick(InventoryClickEvent event){//Makes unable to grab anything out of stats menu
         Player player = (Player) event.getWhoClicked();
         if(event.getView().getTitle().equalsIgnoreCase(ChatColor.BLUE+"Player stats")){
             event.setCancelled(true);

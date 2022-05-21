@@ -23,15 +23,18 @@ public class CachedPlayer {
     public static CachedPlayer get(Player p) {
         return map.get(p);
     }
+    public void remove(){//Removes instance from map
+        map.remove(player);
+    }
     public CachedPlayer(Player p){
         player = p;
         map.put(p, this);
-    }
+    }//Creates new instance of CachedPlayer and stores in map for usage until player leaves or server shuts down.
     public void loadFromDB(){
-        Bukkit.getScheduler().runTaskAsynchronously(getServer().getPluginManager().getPlugin("Stats"), new Runnable() {
+        Bukkit.getScheduler().runTaskAsynchronously(getServer().getPluginManager().getPlugin("Stats"), new Runnable() {//Async run
             @Override
             public void run () {
-                try {
+                try { //Gets data for player if present in DB check returned that they are. Gets all data and adds to specific indexes
                     String UUID = player.getUniqueId().toString();
                     Connection con = Stats.instance.getConnection();
                     PreparedStatement statement = con.prepareStatement("SELECT * FROM userList WHERE UUID='"+UUID+"'");
@@ -51,14 +54,13 @@ public class CachedPlayer {
             }
         });
     }
-
     public void loadToDB(){
         String UUID = player.getUniqueId().toString();
         if(!playerStats.isEmpty()){
             Bukkit.getScheduler().runTaskAsynchronously(getServer().getPluginManager().getPlugin("Stats"), new Runnable() {
                 @Override
                 public void run () {
-                    try{
+                    try{//On player leave or server shuts down, updates user stats so not to spam with SQL queries
                         Connection con = Stats.instance.getConnection();
                         PreparedStatement Kills = con.prepareStatement("UPDATE userList SET kills="+playerStats.get(0)+" WHERE UUID='"+UUID+"'");
                         PreparedStatement Walked = con.prepareStatement("UPDATE userList SET walked="+playerStats.get(1)+" WHERE UUID='"+UUID+"'");

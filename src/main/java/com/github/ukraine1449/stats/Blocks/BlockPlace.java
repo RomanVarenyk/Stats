@@ -15,7 +15,7 @@ public class BlockPlace implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)// Sets the block break counter up one whenever block is placed by player.
         public void onBlockPlace(BlockPlaceEvent event){
         Player player = event.getPlayer();
         CachedPlayer cp = CachedPlayer.get(player);

@@ -15,6 +15,6 @@ public class Exp implements Listener {
         CachedPlayer cp = CachedPlayer.get(e.getPlayer());
         if(cp.playerStats.get(5) < player.getLevel()){
             cp.playerStats.set(5, player.getLevel());
-        }
+        }//Gets if current level is highest then stored, if it is, then update it.
     }
 }

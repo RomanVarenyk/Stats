@@ -15,11 +15,10 @@ public class BlockBreak implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST)// Sets the block break counter up one whenever block is broken by player.
     public void onBlockBreak(BlockBreakEvent event){
         Player player = event.getPlayer();
         CachedPlayer cp = CachedPlayer.get(player);
         cp.playerStats.set(3, cp.playerStats.get(3)+1);
     }
 }
-//
