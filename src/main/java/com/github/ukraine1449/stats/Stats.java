@@ -2,7 +2,6 @@ package com.github.ukraine1449.stats;
 
 import com.github.ukraine1449.stats.Blocks.BlockBreak;
 import com.github.ukraine1449.stats.Blocks.BlockPlace;
-import com.github.ukraine1449.stats.Database.Mongo;
 import com.github.ukraine1449.stats.Death.Kills;
 import com.github.ukraine1449.stats.Menu.MenuHandler;
 import com.github.ukraine1449.stats.Player.CachedPlayer;
@@ -21,14 +20,12 @@ import java.util.ArrayList;
 
 public final class Stats extends JavaPlugin {
     public static Stats instance;
-    public Mongo mongoConnection;
     public ArrayList<Player> onlinePlayers =  new ArrayList<>();
     @Override
     public void onEnable() {
         instance =this;
         try {
             createTableUserList();
-            loadMongo();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,14 +46,7 @@ public final class Stats extends JavaPlugin {
             cp.loadToDB();
             onlinePlayers.remove(p);
         }
-        mongoConnection.close();
-    }
-    private void loadMongo() {
-        try {
-            mongoConnection = new Mongo(getConfig().getString("Mongo.host"), getConfig().getInt("Mongo.port"), getConfig().getString("Mongo.database"), getConfig().getString("Mongo.collection"));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        //TODO Add SQL disconect reference
     }
     public Connection getConnection() throws Exception{
         String ip = getConfig().getString("ip");
@@ -79,7 +69,7 @@ public final class Stats extends JavaPlugin {
     public void createTableUserList()throws Exception{
         try{
             Connection con = getConnection();
-            PreparedStatement create = con.prepareStatement("CREATE TABLE IF NOT EXISTS userList(UUID varchar(255), PRIMARY KEY (UUID))");
+            PreparedStatement create = con.prepareStatement("CREATE TABLE IF NOT EXISTS userList(UUID varchar(255), int kills, int deaths, int exp, int mined, int placed,int walked, PRIMARY KEY (UUID))");
             create.executeUpdate();
             con.close();
         }catch(Exception e){
